@@ -309,6 +309,11 @@ public class VersionRange {
     public boolean contains(String versionStr) throws ParseException {
         return contains(new Version(versionStr));
     }
+    
+    public boolean containsQualified(String versionStr) throws ParseException {
+        return containsQualified(new Version(versionStr));
+    }
+
 
     public boolean contains(Version version) {
         if (startExclusive ? version.compareUnqualified(startVersion) <= 0 : version
@@ -320,6 +325,21 @@ public class VersionRange {
         }
         if (endExclusive ? version.compareUnqualified(endVersion) >= 0 : version
                 .compareUnqualified(endVersion) > 0) {
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean containsQualified(Version version) {
+        if (startExclusive ? version.compareTo(startVersion) <= 0 : version
+                .compareTo(startVersion) < 0) {
+            return false;
+        }
+        if (endVersion == null) {
+            return true;
+        }
+        if (endExclusive ? version.compareTo(endVersion) >= 0 : version
+                .compareTo(endVersion) > 0) {
             return false;
         }
         return true;
